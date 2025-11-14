@@ -1,0 +1,32 @@
+# .dockerignore
+.git
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+.env
+.env.local
+.env.*.local
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Logs
+*.log
+
+# Остальной мусор
+.DS_Store
+Thumbs.db
