@@ -43,7 +43,8 @@ class BookingSerializer(serializers.ModelSerializer):
 
         Проверяет, что:
         - время начала брони строго меньше времени окончания;
-        - время начала не находится в прошлом (с учётом временной зоны).
+        - время начала не находится в прошлом (с учётом временной зоны);
+        - в выбранной комнате нет пересекающихся бронирований.
 
         Args:
             data (dict): Данные, прошедшие первичную валидацию DRF.
@@ -65,6 +66,21 @@ class BookingSerializer(serializers.ModelSerializer):
             if start < timezone.now():
                 raise serializers.ValidationError(
                     "Нельзя создать бронирование на прошедшее время."
+                )
+
+        room = data.get('room')
+        if room and start and end:
+            conflicting_bookings = Booking.objects.filter(
+                room=room,
+                start_time__lt=end,
+                end_time__gt=start
+            )
+            if self.instance:
+                conflicting_bookings = conflicting_bookings.exclude(id=self.instance.id)
+
+            if conflicting_bookings.exists():
+                raise serializers.ValidationError(
+                    "Эта комната уже занята в выбранное время"
                 )
 
         return data
