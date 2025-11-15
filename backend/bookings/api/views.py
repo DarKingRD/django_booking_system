@@ -31,7 +31,7 @@ def register(request):
             {"message": "Пользователь успешно зарегестрирован"},
             status=status.HTTP_201_CREATED
         )
-    return Response(serializer.errors, status=status.HTTP400_BAD_REQUEST)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RoomViewSet(viewsets.ReadOnlyModelViewSet):
     """Представление для просмотра переговорных комнат.
