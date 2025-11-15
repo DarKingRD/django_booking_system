@@ -7,7 +7,6 @@ import os
 from pathlib import Path
 from decouple import Config, RepositoryEnv
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env_path = BASE_DIR / '.env'
@@ -31,6 +30,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'bookings',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +106,13 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Booking API",
+    "VERSION": "1.0.0",
+    "description": "API для бронирования переговорных комнат",
 }
 
 SIMPLE_JWT = {

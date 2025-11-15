@@ -5,10 +5,33 @@
 - BookingViewSet: для создания, просмотра и удаления собственных бронирований
   с автоматической привязкой к авторизованному пользователю.
 """
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 from bookings.models import Room, Booking
-from .serializers import RoomSerializer, BookingSerializer
+from .serializers import (
+    RoomSerializer, BookingSerializer, UserRegistationSerializer
+)
+from drf_spectacular.utils import extend_schema
+
+@extend_schema(
+    request=UserRegistationSerializer,
+    responses={201: {"type": "object", "properties": {"message": {"type": "string"}}}},
+    description="Регистрация нового пользователя. Принимает username, email и password."
+)
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    """Регистрация нового пользователя."""
+    serializer = UserRegistationSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Пользователь успешно зарегестрирован"},
+            status=status.HTTP_201_CREATED
+        )
+    return Response(serializer.errors, status=status.HTTP400_BAD_REQUEST)
 
 class RoomViewSet(viewsets.ReadOnlyModelViewSet):
     """Представление для просмотра переговорных комнат.
