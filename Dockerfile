@@ -10,7 +10,10 @@ RUN groupadd -r django -g 1000 && useradd -r -u 1000 -g django django
 WORKDIR /app
 
 COPY ./backend/requirements.txt .
+
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY .env .
 
 # Копируем весь проект
 COPY ./backend .

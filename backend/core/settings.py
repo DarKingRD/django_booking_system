@@ -10,7 +10,7 @@ from decouple import Config, RepositoryEnv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
+env_path = BASE_DIR / '.env'
 config = Config(RepositoryEnv(env_path))
 
 SECRET_KEY = config('SECRET_KEY')
