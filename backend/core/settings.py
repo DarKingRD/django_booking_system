@@ -3,12 +3,14 @@ Django settings for project.
 """
 from datetime import timedelta
 import os
+
 from pathlib import Path
 from decouple import Config, RepositoryEnv
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-env_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env')
+env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), '.env')
 config = Config(RepositoryEnv(env_path))
 
 SECRET_KEY = config('SECRET_KEY')
